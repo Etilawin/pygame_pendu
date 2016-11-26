@@ -3,6 +3,7 @@ from pygame.locals import *
 from lib import *
 
 def play(screen, dictionary, nbr_coups):
+    bg = pygame.image.load(os.path.join("data","background.jpg"))
     if nbr_coups == 5:
         difficulty = "difficile"
     elif nbr_coups == 10:
@@ -14,12 +15,12 @@ def play(screen, dictionary, nbr_coups):
     words = load_words(dictionary)
     new_word = create_new_word(random.choice(words), nbr_coups)
     while new_word.errors < new_word.nbr_coups and new_word.guess < len(new_word.text):
-        screen.fill((255,255,255))
+        screen.blit(bg, (0,0))
         screen.blit(font.render("Le mot que tu cherches est: ",True,(0,0,0)),(20,100))
         screen.blit(font.render("Erreurs: {}/{}".format(new_word.errors, new_word.nbr_coups),True,(0,0,0)),(20,200))
         new_word.render(screen)
         if new_word.errors > 0:
-            screen.blit(pygame.image.load(os.path.join("data",difficulty,"{}.jpg".format(str(new_word.errors)))), (250,200))
+            screen.blit(pygame.image.load(os.path.join("data",difficulty,"{}.png".format(str(new_word.errors)))), (250,200))
         for e in pygame.event.get():
             if e.type == QUIT:
                 exit()
@@ -87,7 +88,7 @@ def play(screen, dictionary, nbr_coups):
     cursor = pygame.transform.scale(image, (50,50))
     pos = 1
     while 1:
-        screen.fill((255,255,255))
+        screen.blit(bg, (0,0))
         screen.blit(font.render("Le mot était : {}".format(new_word.string_text),
                                 True,
                                 (255,0,0)),

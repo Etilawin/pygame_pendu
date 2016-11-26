@@ -22,8 +22,9 @@ def start_menu(screen):
     option2 = font.render("IMPORT DICT",True,(0,0,0))
     option3 = font.render("DIFFICULTY",True,(0,0,0))
     option4 = font.render("QUIT",True,(0,0,0))
+    bg = pygame.image.load(os.path.join("data","background.jpg"))
     while 1:
-        screen.fill((255,255,255)) # Fond blanc
+        screen.blit(bg, (0,0))
         screen.blit(option1,(150,100))
         screen.blit(option2,(150,200))
         screen.blit(option3,(150,300))
