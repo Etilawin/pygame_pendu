@@ -3,11 +3,12 @@ import pygame, os, sys, string
 font = pygame.font.SysFont("arial",30)
 
 class word:
-
+    """ Classe word pour le jeu du pendu """
     def __init__(self,text,dark,nbr_coups):
+        """ On initialise tout comme d'hab """
         self.text = text
         self.dark = dark
-        self.string_dark = ''.join(self.dark)
+        self.string_dark = ''.join(self.dark) # Liste en mot
         self.string_text = ''.join(self.text)
         self.nbr_coups = nbr_coups
         self.errors = 0
@@ -15,26 +16,28 @@ class word:
         self.true_letters = []
         self.wrong_letters = []
         self.tested_letters = []
-        self.wrong = ""
+        self.wrong = "" # Si la lettre rentrée est déjà entrée on changera sa valeur
 
     def update(self,letter):
-        if letter not in self.tested_letters:
-            self.wrong = ""
-            self.tested_letters.append(letter)
+        """ On met a jour le mot """
+        if letter not in self.tested_letters: # Si on a pas déjà entré la lettre
+            self.wrong = "" # Pas de fausse lettre
+            self.tested_letters.append(letter) # On ajoute aux lettres entrées
             found = False
-            for i in range(len(self.text)):
-                if self.text[i] == letter:
+            for i in range(len(self.text)): # On cherche la lettre dans le mot
+                if self.text[i] == letter: # On le met à jour si elle est dans le mot
                     self.dark[i] = letter
                     found = True
-                    self.guess += 1
+                    self.guess += 1 # Lettres trouvées += 1
                     self.true_letters.append(letter)
-            if not found:
-                self.errors += 1
+            if not found: # Sinon
+                self.errors += 1 # Erreurs += 1
                 self.wrong_letters.append(letter)
         else:
             self.wrong = letter
 
     def render(self,surface):
+        """ On affiche le mot à chercher et l'erreur si il y en a une """
         self.string_dark = ''.join(self.dark)
         surface.blit(font.render(self.string_dark,True,(0,0,0)),(20,150))
         if self.wrong != "":
@@ -44,11 +47,13 @@ class word:
                          (20,20))
 
 def load_words(dictionary):
-    if os.path.exists(dictionary):
-        filein = open(dictionary,"r")
-        lines = filein.readlines()
+    """ Charge les mots d'un dictionnaire """
+    if os.path.exists(dictionary): # On vérifie si le dic existe (ENCORE?)
+                                   # A cause de l'importation
+        filein = open(dictionary,"r") # On l'ouvre en read-only
+        lines = filein.readlines() # On lit ligne par ligne et on met en liste
         for l in range(0,len(lines)):
-            lines[l] = lines[l].replace("\n","")
+            lines[l] = lines[l].replace("\n","") # On enlève les token newline
         filein.close()
         return lines
     else:
@@ -79,11 +84,9 @@ def clear_word(ligne):
 def create_new_word(Word,nbr_coups):
     list_word = []
     dark_list_word = []
-    my_word = clear_word(Word)
+    my_word = clear_word(Word) # On néttoie le bazar
     for i in my_word:
         list_word.append(i)
         dark_list_word.append(" _ ")
-    # dark_list_word[0] = list_word[0] # Help w/ first and last letter
-    # dark_list_word[-1] = list_word[-1] # But we aren't so stupid right ;)
-    new_word = word(list_word,dark_list_word,nbr_coups)
+    new_word = word(list_word,dark_list_word,nbr_coups) # On créer notre nouveau mot
     return new_word

@@ -4,22 +4,29 @@ from lib import *
 
 def play(screen, dictionary, nbr_coups):
     bg = pygame.image.load(os.path.join("data","background.jpg"))
+    # On définit la difficulté (donc le chemin)
     if nbr_coups == 5:
         difficulty = "difficile"
     elif nbr_coups == 10:
         difficulty = "moyen"
     elif nbr_coups == 15:
         difficulty = "facile"
+    # Messages de fin
     winner = font.render("Tu as gagné!!!",True,(0,0,0))
     loser = font.render("Tu as perdu!!!",True,(0,0,0))
+    # On charge le dictionnaire
     words = load_words(dictionary)
+    # Le mot est choisi au hasard
     new_word = create_new_word(random.choice(words), nbr_coups)
+    # Tant qu'on à pas dépassé le nombre de coups ou qu'on à pas trouvé le mot
     while new_word.errors < new_word.nbr_coups and new_word.guess < len(new_word.text):
+        # On met tout à l'écran
         screen.blit(bg, (0,0))
         screen.blit(font.render("Le mot que tu cherches est: ",True,(0,0,0)),(20,100))
         screen.blit(font.render("Erreurs: {}/{}".format(new_word.errors, new_word.nbr_coups),True,(0,0,0)),(20,200))
-        new_word.render(screen)
+        new_word.render(screen) # MEME LE MOT OLALALALA
         if new_word.errors > 0:
+            # On affiche l'image correspondant au nombres d'erreurs
             screen.blit(pygame.image.load(os.path.join("data",difficulty,"{}.png".format(str(new_word.errors)))), (250,200))
         for e in pygame.event.get():
             if e.type == QUIT:
@@ -77,10 +84,12 @@ def play(screen, dictionary, nbr_coups):
                     new_word.update("y")
                 elif e.key == K_z:
                     new_word.update("w")
-                else:
+                else: # Faudrait vraiment être stupide...
                     screen.blit(font.render("Ceci n'est pas une lettre!!!",True,(0,0,0)),(180,10))
             pygame.display.update()
 
+
+    # Pour voir comment un menu fonctionne GOTO: menu.py 
     menu_font = pygame.font.Font(os.path.join("data","True_Lies.TTF"),50)
     option1 = menu_font.render("RESTART",True,(0,0,0))
     option2 = menu_font.render("QUIT",True,(0,0,0))
