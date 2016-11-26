@@ -39,7 +39,7 @@ class word:
     def render(self,surface):
         """ On affiche le mot à chercher et l'erreur si il y en a une """
         self.string_dark = ''.join(self.dark)
-        surface.blit(font.render(self.string_dark,True,(0,0,0)),(20,150))
+        surface.blit(font.render(self.string_dark,True,(255,255,255)),(20,150))
         if self.wrong != "":
             surface.blit(font.render("Tu as déjà essayé {}".format(self.wrong),
                                      True,
