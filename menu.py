@@ -54,7 +54,7 @@ def start_menu(screen):
                     if pos == 0: # 1 PLAYER
                         play(screen, dictionary, nbr_coup) # On lance le jeu!
                     elif pos == 1: # 2 PLAYER
-                        play_2(screen, nbr_coup)
+                        play(screen, dictionary, nbr_coup, True)
                     elif pos == 2: # Si "IMPORT DICT"
                         # On utilise le gestionnaire de fichier Tkinter
                         root = Tk()

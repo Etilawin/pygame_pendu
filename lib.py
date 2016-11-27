@@ -1,6 +1,7 @@
 import pygame, os, sys, string
+from pygame.locals import *
 
-font = pygame.font.SysFont("arial",30)
+font = pygame.font.Font(os.path.join("data","True_Lies.TTF"),30)
 
 class word:
     """ Classe word pour le jeu du pendu """
@@ -88,5 +89,77 @@ def create_new_word(Word,nbr_coups):
     for i in my_word:
         list_word.append(i)
         dark_list_word.append(" _ ")
-    new_word = word(list_word,dark_list_word,nbr_coups) # On créer notre nouveau mot
+    new_word = word(list_word,dark_list_word,nbr_coups) # On crée notre nouveau mot
     return new_word
+
+def ask(screen, question):
+    """ ask(screen, question) -> answer """
+    bg = pygame.image.load(os.path.join("data","background.jpg"))
+    word_to_find = [] # Le mot que l'autre decra trouver
+    while 1:
+        screen.blit(bg, (0,0)) # Bg
+        for e in pygame.event.get():
+            if e.type == QUIT:
+                exit()
+            elif e.type == KEYDOWN: # Weird because AZERTY (Vive la France)
+                if e.key == K_a:
+                    word_to_find.append("q")
+                elif e.key == K_b:
+                    word_to_find.append("b")
+                elif e.key == K_c:
+                    word_to_find.append("c")
+                elif e.key == K_d:
+                    word_to_find.append("d")
+                elif e.key == K_e:
+                    word_to_find.append("e")
+                elif e.key == K_f:
+                    word_to_find.append("f")
+                elif e.key == K_g:
+                    word_to_find.append("g")
+                elif e.key == K_h:
+                    word_to_find.append("h")
+                elif e.key == K_i:
+                    word_to_find.append("i")
+                elif e.key == K_j:
+                    word_to_find.append("j")
+                elif e.key == K_k:
+                    word_to_find.append("k")
+                elif e.key == K_l:
+                    word_to_find.append("l")
+                elif e.key == K_SEMICOLON:
+                    word_to_find.append("m")
+                elif e.key == K_n:
+                    word_to_find.append("n")
+                elif e.key == K_o:
+                    word_to_find.append("o")
+                elif e.key == K_p:
+                    word_to_find.append("p")
+                elif e.key == K_q:
+                    word_to_find.append("a")
+                elif e.key == K_r:
+                    word_to_find.append("r")
+                elif e.key == K_s:
+                    word_to_find.append("s")
+                elif e.key == K_t:
+                    word_to_find.append("t")
+                elif e.key == K_u:
+                    word_to_find.append("u")
+                elif e.key == K_v:
+                    word_to_find.append("v")
+                elif e.key == K_w:
+                    word_to_find.append("z")
+                elif e.key == K_x:
+                    word_to_find.append("x")
+                elif e.key == K_y:
+                    word_to_find.append("y")
+                elif e.key == K_z:
+                    word_to_find.append("w")
+                elif e.key == K_KP_ENTER or e.key == K_RETURN:
+                    return ''.join(word_to_find) # Si entrer : on balance le mot
+                elif e.key == K_BACKSPACE:
+                    word_to_find = word_to_find[:-1] # On supprime
+                else: # Faudrait vraiment être stupide...
+                    screen.blit(font.render("Ceci n'est pas une lettre!!!",True,(255,255,255)),(180,10))
+        screen.blit(font.render("{}_".format(''.join(word_to_find)), True, (255,255,255)), (250, 220))
+        screen.blit(font.render(question ,True,(255,255,255)),(180,100))
+        pygame.display.update()

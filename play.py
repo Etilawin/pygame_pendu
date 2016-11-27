@@ -2,8 +2,10 @@ import pygame, random, time
 from pygame.locals import *
 from lib import *
 
-def play(screen, dictionary, nbr_coups):
+def play(screen, dictionary, nbr_coups, players = False):
     bg = pygame.image.load(os.path.join("data","background.jpg"))
+    if players:
+        dictionary = ask(screen, "Veuillez entrer votre mot : ")
     # On définit la difficulté (donc le chemin)
     if nbr_coups == 5:
         difficulty = "difficile"
@@ -12,10 +14,13 @@ def play(screen, dictionary, nbr_coups):
     elif nbr_coups == 15:
         difficulty = "facile"
     # Messages de fin
-    winner = font.render("Tu as gagné!!!",True,(255,255,255))
+    winner = font.render("BRAVO !!!",True,(255,255,255))
     loser = font.render("Tu as perdu!!!",True,(255,255,255))
-    # On charge le dictionnaire
-    words = load_words(dictionary)
+    if not players:
+        # On charge le dictionnaire
+        words = load_words(dictionary)
+    else:
+        words = [dictionary]
     # Le mot est choisi au hasard
     new_word = create_new_word(random.choice(words), nbr_coups)
     # Tant qu'on à pas dépassé le nombre de coups ou qu'on à pas trouvé le mot
@@ -84,6 +89,8 @@ def play(screen, dictionary, nbr_coups):
                     new_word.update("y")
                 elif e.key == K_z:
                     new_word.update("w")
+                elif e.key == K_ESCAPE:
+                    return 0
                 else: # Faudrait vraiment être stupide...
                     screen.blit(font.render("Ceci n'est pas une lettre!!!",True,(255,255,255)),(180,10))
             pygame.display.update()
@@ -99,7 +106,7 @@ def play(screen, dictionary, nbr_coups):
     pos = 1
     while 1:
         screen.blit(bg, (0,0))
-        screen.blit(font.render("Le mot était : {}".format(new_word.string_text),
+        screen.blit(font.render("Le mot etait : {}".format(new_word.string_text),
                                 True,
                                 (0,255,0)),
                     (170,10))
@@ -121,12 +128,9 @@ def play(screen, dictionary, nbr_coups):
                     if pos < 1: pos = 3
                 elif e.key == K_RETURN:
                     if pos == 1:
-                        play(screen, dictionary, nbr_coups)
+                        play(screen, dictionary, nbr_coups, players)
                     elif pos == 2:
                         exit()
                     elif pos == 3:
                         return 0
         pygame.display.update()
-
-def play_2(screen, nbr_coups):
-    pass
