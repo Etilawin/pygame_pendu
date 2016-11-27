@@ -1,15 +1,15 @@
 import pygame, os, sys, string
 from pygame.locals import *
 
-font = pygame.font.Font(os.path.join("data","True_Lies.TTF"),30)
+font = pygame.font.Font(os.path.join("data", "True_Lies.TTF"), 30)
 
 class word:
     """ Classe word pour le jeu du pendu """
-    def __init__(self,text,dark,nbr_coups):
+    def __init__(self, text, dark, nbr_coups):
         """ On initialise tout comme d'hab """
         self.text = text
-        self.dark = dark
-        self.string_dark = ''.join(self.dark) # Liste en mot
+        self.dark = dark # Texte caché
+        self.string_dark = ''.join(self.dark) # Transforme liste en mot
         self.string_text = ''.join(self.text)
         self.nbr_coups = nbr_coups
         self.errors = 0
@@ -19,7 +19,7 @@ class word:
         self.tested_letters = []
         self.wrong = "" # Si la lettre rentrée est déjà entrée on changera sa valeur
 
-    def update(self,letter):
+    def update(self, letter):
         """ On met a jour le mot """
         if letter not in self.tested_letters: # Si on a pas déjà entré la lettre
             self.wrong = "" # Pas de fausse lettre
@@ -37,24 +37,26 @@ class word:
         else:
             self.wrong = letter
 
-    def render(self,surface):
+    def render(self, surface):
         """ On affiche le mot à chercher et l'erreur si il y en a une """
         self.string_dark = ''.join(self.dark)
-        surface.blit(font.render(self.string_dark,True,(255,255,255)),(20,150))
+        surface.blit(font.render(self.string_dark, True, (255, 255, 255)), (20, 150))
         if self.wrong != "":
             surface.blit(font.render("Tu as deja essaye {}".format(self.wrong),
                                      True,
-                                     (255,0,0)),
-                         (20,20))
+                                     (255, 0, 0)),
+                         (20, 20))
 
 def load_words(dictionary):
     """ Charge les mots d'un dictionnaire """
+    if dictionary == "": # Si annulation lors du choix du dictionnaire
+        dictionary = os.path.join("data", "dictionary.txt")
     if os.path.exists(dictionary): # On vérifie si le dic existe (ENCORE?)
                                    # A cause de l'importation
-        filein = open(dictionary,"r") # On l'ouvre en read-only
+        filein = open(dictionary, "r") # On l'ouvre en read-only
         lines = filein.readlines() # On lit ligne par ligne et on met en liste
-        for l in range(0,len(lines)):
-            lines[l] = lines[l].replace("\n","") # On enlève les token newline
+        for l in range(0, len(lines)):
+            lines[l] = lines[l].replace("\n", "") # On enlève les token newline
         filein.close()
         return lines
     else:
@@ -83,21 +85,22 @@ def clear_word(ligne):
         return ligne_propre.lower()
 
 def create_new_word(Word,nbr_coups):
+    """ On créer un nouveau mot propre avec une classe """
     list_word = []
     dark_list_word = []
     my_word = clear_word(Word) # On néttoie le bazar
     for i in my_word:
         list_word.append(i)
         dark_list_word.append(" _ ")
-    new_word = word(list_word,dark_list_word,nbr_coups) # On crée notre nouveau mot
+    new_word = word(list_word, dark_list_word, nbr_coups) # On crée notre nouveau mot
     return new_word
 
 def ask(screen, question):
     """ ask(screen, question) -> answer """
-    bg = pygame.image.load(os.path.join("data","background.jpg"))
+    bg = pygame.image.load(os.path.join("data", "background.jpg"))
     word_to_find = [] # Le mot que l'autre decra trouver
     while 1:
-        screen.blit(bg, (0,0)) # Bg
+        screen.blit(bg, (0, 0)) # Bg
         for e in pygame.event.get():
             if e.type == QUIT:
                 pygame.quit()
@@ -160,7 +163,7 @@ def ask(screen, question):
                 elif e.key == K_BACKSPACE:
                     word_to_find = word_to_find[:-1] # On supprime
                 else: # Faudrait vraiment être stupide...
-                    screen.blit(font.render("Ceci n'est pas une lettre!!!",True,(255,255,255)),(180,10))
-        screen.blit(font.render("{}_".format(''.join(word_to_find)), True, (255,255,255)), (250, 220))
-        screen.blit(font.render(question ,True,(255,255,255)),(180,100))
+                    screen.blit(font.render("Ceci n'est pas une lettre!!!", True, (255, 255, 255)), (180, 10))
+        screen.blit(font.render("{}_".format(''.join(word_to_find)), True, (255, 255, 255)), (250, 220))
+        screen.blit(font.render(question, True,(255, 255, 255)), (180, 100))
         pygame.display.update()

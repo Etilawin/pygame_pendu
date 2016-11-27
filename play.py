@@ -3,6 +3,8 @@ from pygame.locals import *
 from lib import *
 
 def play(screen, dictionary, nbr_coups, players = False):
+    """ Fonction principale de jeu, corps général qui marche pour un
+        ou deux joueurs """
     bg = pygame.image.load(os.path.join("data","background.jpg"))
     if players:
         dictionary = ask(screen, "Veuillez entrer votre mot : ")
@@ -14,29 +16,34 @@ def play(screen, dictionary, nbr_coups, players = False):
     elif nbr_coups == 15:
         difficulty = "facile"
     # Messages de fin
-    winner = font.render("BRAVO !!!",True,(255,255,255))
-    loser = font.render("Tu as perdu!!!",True,(255,255,255))
-    if not players:
-        # On charge le dictionnaire
-        words = load_words(dictionary)
-    else:
+    winner = font.render("BRAVO !!!", True, (255, 255, 255))
+    loser = font.render("Tu as perdu !!!", True, (255, 255, 255))
+    if not players: # Si on est pas à deux joueurs :
+        words = load_words(dictionary) # On charge le dictionnaire
+    else: # Sinon le mot beh c'est le mot entré
         words = [dictionary]
     # Le mot est choisi au hasard
     new_word = create_new_word(random.choice(words), nbr_coups)
     # Tant qu'on à pas dépassé le nombre de coups ou qu'on à pas trouvé le mot
     while new_word.errors < new_word.nbr_coups and new_word.guess < len(new_word.text):
         # On met tout à l'écran
-        screen.blit(bg, (0,0))
-        screen.blit(font.render("Le mot que tu cherches est: ",True,(255,255,255)),(20,100))
-        screen.blit(font.render("Erreurs: {}/{}".format(new_word.errors, new_word.nbr_coups),True,(255,255,255)),(20,200))
+        screen.blit(bg, (0, 0))
+        screen.blit(font.render("Le mot que tu cherches est : ", True, (255, 255, 255)), (20, 100))
+        screen.blit(font.render("Erreurs : {} / {} ".format(new_word.errors, new_word.nbr_coups),
+                                True,
+                                (255, 255, 255)),
+                    (20, 200))
         new_word.render(screen) # MEME LE MOT OLALALALA
         if new_word.errors > 0:
             # On affiche l'image correspondant au nombres d'erreurs
-            screen.blit(pygame.image.load(os.path.join("data",difficulty,"{}.png".format(str(new_word.errors)))), (250,200))
+            screen.blit(pygame.image.load(os.path.join("data",
+                                                       difficulty,
+                                                       "{}.png".format(str(new_word.errors)))),
+                        (250, 200))
         for e in pygame.event.get():
             if e.type == QUIT:
                 pygame.quit()
-                sys.exit("Quitting...")
+                sys.exit("Quitting...") # On dit que ça quitte
             elif e.type == KEYDOWN: # Weird because AZERTY (Vive la France)
                 if e.key == K_a:
                     new_word.update("q")
@@ -93,30 +100,32 @@ def play(screen, dictionary, nbr_coups, players = False):
                 elif e.key == K_ESCAPE:
                     return 0
                 else: # Faudrait vraiment être stupide...
-                    screen.blit(font.render("Ceci n'est pas une lettre!!!",True,(255,255,255)),(180,10))
-            pygame.display.update()
-
+                    screen.blit(font.render("Ceci n'est pas une lettre!!!",
+                                            True,
+                                            (255, 255, 255)),
+                                (180, 10))
+            pygame.display.update() # On met de l'eau (rafraîchit la fenêtre)
 
     # Pour voir comment un menu fonctionne GOTO: menu.py
-    menu_font = pygame.font.Font(os.path.join("data","True_Lies.TTF"),50)
-    option1 = menu_font.render("RESTART",True,(255,255,255))
-    option2 = menu_font.render("QUIT",True,(255,255,255))
-    option3 = menu_font.render("MENU PRINCIPAL", True,(255,255,255))
-    image = pygame.image.load(os.path.join("data","select.png"))
-    cursor = pygame.transform.scale(image, (50,50))
+    menu_font = pygame.font.Font(os.path.join("data", "True_Lies.TTF"), 50)
+    option1 = menu_font.render("RESTART", True, (255, 255, 255))
+    option2 = menu_font.render("QUIT", True, (255, 255, 255))
+    option3 = menu_font.render("MENU PRINCIPAL", True, (255, 255, 255))
+    image = pygame.image.load(os.path.join("data", "select.png"))
+    cursor = pygame.transform.scale(image, (50, 50))
     pos = 1
-    while 1:
-        screen.blit(bg, (0,0))
-        screen.blit(font.render("Le mot etait : {}".format(new_word.string_text),
+    while 1: # Boucle infinie
+        screen.blit(bg, (0, 0))
+        screen.blit(font.render("Le mot etait : {} ".format(new_word.string_text),
                                 True,
-                                (0,255,0)),
-                    (170,10))
-        if new_word.errors == new_word.nbr_coups: screen.blit(loser,(170,100))
-        else: screen.blit(winner,(170,100))
-        screen.blit(option1,(200,200))
-        screen.blit(option2,(200,300))
-        screen.blit(option3,(200,400))
-        screen.blit(cursor, (130,pos*100 + 100))
+                                (0, 255, 0)),
+                    (170, 10))
+        if new_word.errors == new_word.nbr_coups: screen.blit(loser, (170, 100))
+        else: screen.blit(winner, (170, 100))
+        screen.blit(option1, (200, 200))
+        screen.blit(option2, (200, 300))
+        screen.blit(option3, (200, 400))
+        screen.blit(cursor,  (130, pos*100 + 100))
         for e in pygame.event.get():
             if e.type == QUIT:
                 pygame.quit()
