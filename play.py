@@ -35,7 +35,8 @@ def play(screen, dictionary, nbr_coups, players = False):
             screen.blit(pygame.image.load(os.path.join("data",difficulty,"{}.png".format(str(new_word.errors)))), (250,200))
         for e in pygame.event.get():
             if e.type == QUIT:
-                exit()
+                pygame.quit()
+                sys.exit("Quitting...")
             elif e.type == KEYDOWN: # Weird because AZERTY (Vive la France)
                 if e.key == K_a:
                     new_word.update("q")
@@ -118,7 +119,8 @@ def play(screen, dictionary, nbr_coups, players = False):
         screen.blit(cursor, (130,pos*100 + 100))
         for e in pygame.event.get():
             if e.type == QUIT:
-                exit()
+                pygame.quit()
+                sys.exit("Quitting...")
             elif e.type == KEYDOWN:
                 if e.key == K_DOWN:
                     pos += 1
@@ -130,7 +132,8 @@ def play(screen, dictionary, nbr_coups, players = False):
                     if pos == 1:
                         play(screen, dictionary, nbr_coups, players)
                     elif pos == 2:
-                        exit()
+                        pygame.quit()
+                        sys.exit("Quitting...")
                     elif pos == 3:
                         return 0
         pygame.display.update()

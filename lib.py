@@ -42,7 +42,7 @@ class word:
         self.string_dark = ''.join(self.dark)
         surface.blit(font.render(self.string_dark,True,(255,255,255)),(20,150))
         if self.wrong != "":
-            surface.blit(font.render("Tu as déjà essayé {}".format(self.wrong),
+            surface.blit(font.render("Tu as deja essaye {}".format(self.wrong),
                                      True,
                                      (255,0,0)),
                          (20,20))
@@ -58,8 +58,8 @@ def load_words(dictionary):
         filein.close()
         return lines
     else:
-        print("Impossible de trouver un dictionnaire!!!")
-        exit()
+        pygame.quit()
+        sys.exit("Impossible de trouver un dictionnaire!!!")
 
 def clear_word(ligne):
         """ supprime les charactères non compris dans string.ascii_letters"""
@@ -100,7 +100,8 @@ def ask(screen, question):
         screen.blit(bg, (0,0)) # Bg
         for e in pygame.event.get():
             if e.type == QUIT:
-                exit()
+                pygame.quit()
+                sys.exit("Quitting ... ")
             elif e.type == KEYDOWN: # Weird because AZERTY (Vive la France)
                 if e.key == K_a:
                     word_to_find.append("q")

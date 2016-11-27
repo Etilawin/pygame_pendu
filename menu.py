@@ -7,6 +7,9 @@ from tkinter.filedialog import askopenfilename
 from tkinter import *
 
 def start_menu(screen):
+    pygame.mixer.music.load(os.path.join("data", "halloween.mp3"))
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.5)
     # On vérifie le dictionnaire
     if os.path.exists(os.path.join("data","dictionary.txt")):
         dictionary = os.path.join("data","dictionary.txt")
@@ -42,7 +45,8 @@ def start_menu(screen):
         screen.blit(cursor, (80,pos*100 + 10))
         for e in pygame.event.get():
             if e.type == QUIT: # Si il ferme la fenêtre on quitte tout
-                exit()
+                pygame.quit()
+                sys.exit("Quitting...")
             elif e.type == KEYDOWN: # Si il appuie sur une touche
                 if e.key == K_DOWN: # Flèche du bas
                     pos += 1
@@ -65,7 +69,8 @@ def start_menu(screen):
                     elif pos == 3: # DIFFICULTY
                         nbr_coup = difficulty_menu(screen, nbr_coup) # On choisit
                     elif pos == 4: # QUIT
-                        exit() # ça parle de lui-même....
+                        pygame.quit()
+                        sys.exit("Quitting...") # ça parle de lui-même....
 
         pygame.display.update() # On update tout l'écran
 
@@ -89,7 +94,8 @@ def difficulty_menu(screen, difficulty):
         screen.blit(cursor, (80,pos*100))
         for e in pygame.event.get():
             if e.type == QUIT:
-                exit()
+                pygame.quit()
+                sys.exit("Quitting...")
             elif e.type == KEYDOWN:
                 if e.key == K_DOWN:
                     pos += 1
