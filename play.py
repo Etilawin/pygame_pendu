@@ -2,6 +2,7 @@ import pygame, random, time
 from pygame.locals import *
 from lib import *
 
+
 def play(screen, dictionary, nbr_coups, players = False):
     """ Fonction principale de jeu, corps général qui marche pour un
         ou deux joueurs """
@@ -139,7 +140,9 @@ def play(screen, dictionary, nbr_coups, players = False):
                     if pos < 1: pos = 3
                 elif e.key == K_RETURN:
                     if pos == 1:
-                        play(screen, dictionary, nbr_coups, players)
+                        returned = play(screen, dictionary, nbr_coups, players)
+                        if not returned:
+                            return 0
                     elif pos == 2:
                         pygame.quit()
                         sys.exit("Quitting...")

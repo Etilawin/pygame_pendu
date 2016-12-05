@@ -10,7 +10,7 @@ def start_menu(screen):
     """ écran principal, menu principal du joueur """
     # On met de la musikquent
     pygame.mixer.music.load(os.path.join("data", "halloween.mp3"))
-    pygame.mixer.music.play(-1) # Loop = -1
+    pygame.mixer.music.play(-1) # Loop = infinie
     pygame.mixer.music.set_volume(0.5) # On réduit le volume
     # On vérifie le dictionnaire
     if os.path.exists(os.path.join("data", "dictionary.txt")):
